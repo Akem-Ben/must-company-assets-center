@@ -20,6 +20,7 @@ const ActivitiesComponent: React.FC<ActivitiesComponentProps> = ({
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
       <div className="flex flex-col space-y-12">
+
         {/* Header Section */}
         <div className="text-center mb-10 text-[60px] font-[700] leading-[150%]">
           <h1 className="">
@@ -34,6 +35,7 @@ const ActivitiesComponent: React.FC<ActivitiesComponentProps> = ({
           <div key={section.id} className="flex flex-col md:flex-row w-full">
             {section.imagePosition === "right" ? (
               <div className="flex gap-[40px]">
+
                 {/* Image on left */}
                 <div className="w-full md:w-2/3 relative h-64 md:h-auto">
                   <div className=" w-[825px] h-[171px]">
@@ -59,6 +61,7 @@ const ActivitiesComponent: React.FC<ActivitiesComponentProps> = ({
               </div>
             ) : (
               <div className="flex gap-[40px]">
+                
                 {/* Text on right */}
                 <div className="w-full md:w-1/3 flex flex-col justify-center md:pl-6">
                   <div className="space-y-2 text-right">
@@ -98,7 +101,7 @@ export const ActivitiesPage: React.FC = () => {
       id: "section1",
       title: "인문학 콘서트",
       description: "깊은 사유와 따뜻한 대화가 어우러진 시간 마음을 울리는 문학과 인문학의 이야기",
-      imageUrl: "/ActivitiesSection/activity-image-1.svg",
+      imageUrl: "/activitiesSection/activity-image-1.svg",
       imagePosition: "right",
     },
     {
@@ -106,14 +109,14 @@ export const ActivitiesPage: React.FC = () => {
       title: "지역 축제",
       description:
         "지역의 숨결을 느끼며 함께 웃는 하루 박한 만남속에 커지는 온기",
-      imageUrl: "/ActivitiesSection/activity-image-2.svg",
+      imageUrl: "/activitiesSection/activity-image-2.svg",
       imagePosition: "left",
     },
     {
       id: "section3",
       title: "나눔 바자회",
       description: "행복이 전해지는 물건들, 그 속의 이야기들",
-      imageUrl: "/ActivitiesSection/activity-image-3.svg",
+      imageUrl: "/activitiesSection/activity-image-3.svg",
       imagePosition: "right",
     },
     {
@@ -121,7 +124,7 @@ export const ActivitiesPage: React.FC = () => {
       title: "따뜻한 후원",
       description:
         "작은 나눔이 모여 큰 울림이 됩니다 사색의향기와 함께 만들어가는 더 나은 내일",
-      imageUrl: "/ActivitiesSection/activity-image-4.svg",
+      imageUrl: "/activitiesSection/activity-image-4.svg",
       imagePosition: "left",
     },
   ];

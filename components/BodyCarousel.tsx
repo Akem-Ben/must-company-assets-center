@@ -35,6 +35,12 @@ const CarouselSection = () => {
       subtitle: "❹ ❹",
       description: "어린이를 위한 위원인 명도, 위원이 전에 만나다.",
     },
+    {
+        id: 5,
+        title: "대한민국위원위원회",
+        subtitle: "❹ ❹",
+        description: "어린이를 위한 위원인 명도, 위원이 전에 만나다.",
+      },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);

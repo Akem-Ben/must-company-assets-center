@@ -8,6 +8,7 @@ import ChairmanGreetings from "@/components/ChairmanGreeting";
 import { ActivitiesPage } from "@/components/ActivitiesSection";
 import CarouselSection from "@/components/BodyCarousel";
 import Footer from "@/components/Footer";
+import DonationSection from "@/components/DonationSection";
 
 export default function Home() {
   return (
@@ -32,6 +33,9 @@ export default function Home() {
         </section>
         <section>
           <ActivitiesPage />
+        </section>
+        <section>
+          <DonationSection />
         </section>
         <section>
           <CarouselSection />
