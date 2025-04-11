@@ -4,6 +4,10 @@ import Navbar from "@/components/NavBar";
 import Head from "next/head";
 import HeroCarousel from "@/components/Hero";
 import CultureSharingComponent from "@/components/CultureSharing";
+import ChairmanGreetings from "@/components/ChairmanGreeting";
+import { ActivitiesPage } from "@/components/ActivitiesSection";
+import CarouselSection from "@/components/BodyCarousel";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -22,6 +26,18 @@ export default function Home() {
         </section>
         <section>
           <CultureSharingComponent />
+        </section>
+        <section>
+          <ChairmanGreetings />
+        </section>
+        <section>
+          <ActivitiesPage />
+        </section>
+        <section>
+          <CarouselSection />
+        </section>
+        <section>
+          <Footer />
         </section>
       </main>
     </div>
