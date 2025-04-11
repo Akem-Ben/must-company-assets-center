@@ -3,6 +3,7 @@ import React from "react";
 import Navbar from "@/components/NavBar";
 import Head from "next/head";
 import HeroCarousel from "@/components/Hero";
+import CultureSharingComponent from "@/components/CultureSharing";
 
 export default function Home() {
   return (
@@ -18,6 +19,9 @@ export default function Home() {
         </section>
         <section className="bg-white px-[60px]">
           <HeroCarousel />
+        </section>
+        <section>
+          <CultureSharingComponent />
         </section>
       </main>
     </div>
