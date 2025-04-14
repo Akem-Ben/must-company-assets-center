@@ -9,6 +9,7 @@ import { ActivitiesPage } from "@/components/ActivitiesSection";
 import CarouselSection from "@/components/BodyCarousel";
 import Footer from "@/components/Footer";
 import DonationSection from "@/components/DonationSection";
+import BetterWorld from "@/components/BetterWorld";
 
 export default function Home() {
   return (
@@ -36,6 +37,9 @@ export default function Home() {
         </section>
         <section>
           <DonationSection />
+        </section>
+        <section>
+          <BetterWorld />
         </section>
         <section>
           <CarouselSection />

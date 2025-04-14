@@ -1,122 +1,129 @@
-"use client"
+"use client";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
-interface CarouselItem {
+interface PartnerItem {
   id: number;
-  title: string;
-  subtitle: string;
+  imageUrl: string;
+  name: string;
   description: string;
 }
 
-const CarouselSection = () => {
-  const items: CarouselItem[] = [
+const PartnerCarousel = () => {
+  const partners: PartnerItem[] = [
     {
       id: 1,
-      title: "(주) 행복한사람들",
-      subtitle: "❶ ❶",
-      description: "행복한실, 행복한사람들과 함께하는 특별한 실을 선거합니다.",
+      imageUrl: "/carouselSection/partner1.svg",
+      name: "(주)행복한사람들",
+      description: "행복한 날, 행복한 사람들과 함께하는 특별한 날을 선사합니다."
     },
     {
       id: 2,
-      title: "버튼맞글 실천연대",
-      subtitle: "❷ ❷",
-      description: "버튼맞글 장착으로 인터넷은 사례를 만들어 간다니.",
+      imageUrl: "/carouselSection/partner2.svg",
+      name: "바른멋글 실천연대",
+      description: "바른멋글 정신으로 아름다운 사회를 만들어 갑니다."
     },
     {
       id: 3,
-      title: "아트리안",
-      subtitle: "❸ ❸",
-      description:
-        "생활이용시장의 ‘뉴 레이언움 제안서는 상 실’아트로부터 프로젝트.",
+      imageUrl: "/carouselSection/partner3.svg",
+      name: "아트리안",
+      description: "생활미술시장의 두 패러다임을 제안하는 상설 아트갤러리 프로젝트."
     },
     {
       id: 4,
-      title: "대한민국위원위원회",
-      subtitle: "❹ ❹",
-      description: "어린이를 위한 위원인 명도, 위원이 전에 만나다.",
+      imageUrl: "/carouselSection/partner4.svg",
+      name: "대한민국위멘워원회",
+      description: "어린이를 위한 위대한 멘토, 위원이 함께 합니다."
     },
     {
-        id: 5,
-        title: "대한민국위원위원회",
-        subtitle: "❹ ❹",
-        description: "어린이를 위한 위원인 명도, 위원이 전에 만나다.",
-      },
+      id: 5,
+      imageUrl: "/carouselSection/partner5.svg",
+      name: "파트너 5",
+      description: "파트너 5에 대한 설명입니다."
+    },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const intervalRef = useRef<NodeJS.Timeout>();
-
-  // Duplicate items for infinite loop effect
-  const carouselItems = [...items, ...items, ...items];
-
-  const scrollToItem = (index: number) => {
-    if (carouselRef.current) {
-      const itemWidth = carouselRef.current.children[0]?.clientWidth || 0;
-      carouselRef.current.scrollTo({
-        left: itemWidth * index,
-        behavior: "smooth",
-      });
-    }
-  };
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const visibleItems = 4; // Number of visible items at once
 
   const handlePrev = () => {
-    setIsAutoPlaying(false);
-    const newIndex = currentIndex - 1 < 0 ? items.length - 1 : currentIndex - 1;
+    const newIndex = currentIndex - 1 < 0 ? partners.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
-    scrollToItem(newIndex + items.length);
-    resetAutoPlay();
   };
 
   const handleNext = () => {
-    setIsAutoPlaying(false);
-    const newIndex = (currentIndex + 1) % items.length;
+    const newIndex = (currentIndex + 1) % partners.length;
     setCurrentIndex(newIndex);
-    scrollToItem(newIndex + items.length);
-    resetAutoPlay();
   };
 
-  const resetAutoPlay = () => {
+  const startAutoPlay = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-    intervalRef.current = setTimeout(() => {
-      setIsAutoPlaying(true);
-    }, 5000);
+    
+    intervalRef.current = setInterval(() => {
+      handleNext();
+    }, 5000); // 5 seconds interval
+  };
+
+  const stopAutoPlay = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
   };
 
   useEffect(() => {
+    // Start autoplay immediately
     if (isAutoPlaying) {
-      intervalRef.current = setInterval(() => {
-        handleNext();
-      }, 3000);
+      startAutoPlay();
     }
 
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      stopAutoPlay();
     };
   }, [isAutoPlaying, currentIndex]);
 
-  useEffect(() => {
-    if (carouselRef.current) {
-      const itemWidth = carouselRef.current.children[0]?.clientWidth || 0;
-      carouselRef.current.scrollLeft = itemWidth * items.length;
+  // Calculate which items to display based on currentIndex
+  const getVisiblePartners = () => {
+    const result = [];
+    for (let i = 0; i < visibleItems; i++) {
+      const index = (currentIndex + i) % partners.length;
+      result.push(partners[index]);
     }
-  }, []);
+    return result;
+  };
+
+  const handleMouseEnter = () => {
+    setIsAutoPlaying(false);
+    stopAutoPlay();
+  };
+
+  const handleMouseLeave = () => {
+    setIsAutoPlaying(true);
+    startAutoPlay();
+  };
 
   return (
-    <section className="bg-gray-50 py-12 px-4">
+    <section className="py-16 px-4 bg-gray-50">
       <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-2">함께하는 이들</h2>
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-2">함께하는</h2>
+          <h2 className="text-4xl font-bold mb-8">이들</h2>
+        </div>
 
-        <div className="relative mt-8">
+        <div 
+          className="relative"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           {/* Navigation buttons */}
           <button
             onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full w-12 h-12 flex items-center justify-center shadow-md text-white hover:bg-gray-800 transition-colors"
             aria-label="Previous slide"
           >
             <svg
@@ -137,7 +144,7 @@ const CarouselSection = () => {
 
           <button
             onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full w-12 h-12 flex items-center justify-center shadow-md text-white hover:bg-gray-800 transition-colors"
             aria-label="Next slide"
           >
             <svg
@@ -156,48 +163,39 @@ const CarouselSection = () => {
             </svg>
           </button>
 
-          {/* Carousel container */}
-          <div ref={carouselRef} className="overflow-hidden py-4">
-            <div className="flex whitespace-nowrap transition-transform duration-300">
-              {carouselItems.map((item, index) => (
-                <div
-                  key={`${item.id}-${index}`}
-                  className="inline-flex flex-col p-6 mx-2 bg-white rounded-lg shadow-md w-72 flex-shrink-0"
+          {/* Partners carousel */}
+          <div className="overflow-hidden px-12">
+            <div 
+              className="flex transition-all duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * (100 / visibleItems)}%)` }}
+            >
+              {partners.map((partner) => (
+                <div 
+                  key={partner.id}
+                  className="w-1/4 flex-shrink-0 px-4 transition-all duration-500"
                 >
-                  <span className="text-xl font-semibold mb-1">
-                    {item.subtitle}
-                  </span>
-                  <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                  <p className="text-gray-600 whitespace-normal">
-                    {item.description}
-                  </p>
+                  <div className="flex flex-col items-center">
+                    <div className="mb-4 h-24 flex items-center justify-center">
+                      <div className="relative w-40 h-16">
+                        <Image
+                          src={partner.imageUrl}
+                          alt={partner.name}
+                          fill
+                          style={{ objectFit: "contain" }}
+                        />
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-medium text-center mb-2">{partner.name}</h3>
+                    <p className="text-sm text-center text-gray-600">{partner.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Indicators */}
-        <div className="flex justify-center mt-6 space-x-2">
-          {items.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                setCurrentIndex(index);
-                scrollToItem(index + items.length);
-                setIsAutoPlaying(false);
-                resetAutoPlay();
-              }}
-              className={`w-3 h-3 rounded-full ${
-                currentIndex === index ? "bg-blue-600" : "bg-gray-300"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
         </div>
       </div>
     </section>
   );
 };
 
-export default CarouselSection;
+export default PartnerCarousel;
