@@ -19,7 +19,6 @@ export default function Home() {
         <meta name="description" content="Landing page for Panda App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* Main content container with proper overflow handling */}
       <main className="flex-1 flex flex-col bg-white">
         <Navbar />
         <div className="relative w-full bg-white px-[60px]">
