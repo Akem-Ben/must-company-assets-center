@@ -13,40 +13,25 @@ import BetterWorld from "@/components/BetterWorld";
 
 export default function Home() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Head>
         <title>Landing Page | Panda App</title>
         <meta name="description" content="Landing page for Panda App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-white">
-        <section>
-          <Navbar />
-        </section>
-        <section className="bg-white px-[60px]">
+      {/* Main content container with proper overflow handling */}
+      <main className="flex-1 flex flex-col bg-white">
+        <Navbar />
+        <div className="relative w-full bg-white px-[60px]">
           <HeroCarousel />
-        </section>
-        <section>
-          <CultureSharingComponent />
-        </section>
-        <section>
-          <ChairmanGreetings />
-        </section>
-        <section>
-          <ActivitiesPage />
-        </section>
-        <section>
-          <DonationSection />
-        </section>
-        <section>
-          <BetterWorld />
-        </section>
-        <section>
-          <CarouselSection />
-        </section>
-        <section>
-          <Footer />
-        </section>
+        </div>
+        <CultureSharingComponent />
+        <ChairmanGreetings />
+        <ActivitiesPage />
+        <DonationSection />
+        <BetterWorld />
+        <CarouselSection />
+        <Footer />
       </main>
     </div>
   );

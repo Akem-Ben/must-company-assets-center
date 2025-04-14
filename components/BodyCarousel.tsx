@@ -2,44 +2,32 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
-interface PartnerItem {
+interface CarouselItem {
   id: number;
   imageUrl: string;
-  name: string;
-  description: string;
 }
 
-const PartnerCarousel = () => {
-  const partners: PartnerItem[] = [
+const CarouselSection = () => {
+  const items: CarouselItem[] = [
     {
       id: 1,
       imageUrl: "/carouselSection/partner1.svg",
-      name: "(주)행복한사람들",
-      description: "행복한 날, 행복한 사람들과 함께하는 특별한 날을 선사합니다."
     },
     {
       id: 2,
       imageUrl: "/carouselSection/partner2.svg",
-      name: "바른멋글 실천연대",
-      description: "바른멋글 정신으로 아름다운 사회를 만들어 갑니다."
     },
     {
       id: 3,
       imageUrl: "/carouselSection/partner3.svg",
-      name: "아트리안",
-      description: "생활미술시장의 두 패러다임을 제안하는 상설 아트갤러리 프로젝트."
     },
     {
       id: 4,
       imageUrl: "/carouselSection/partner4.svg",
-      name: "대한민국위멘워원회",
-      description: "어린이를 위한 위대한 멘토, 위원이 함께 합니다."
     },
     {
       id: 5,
       imageUrl: "/carouselSection/partner5.svg",
-      name: "파트너 5",
-      description: "파트너 5에 대한 설명입니다."
     },
   ];
 
@@ -47,16 +35,41 @@ const PartnerCarousel = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const visibleItems = 4; // Number of visible items at once
+  const [itemWidth, setItemWidth] = useState(0);
+
+  // Calculate number of visible items based on screen width
+  const getVisibleItemCount = () => {
+    if (typeof window !== 'undefined') {
+      const width = window.innerWidth;
+      if (width < 640) return 1;      // Mobile: 1 item
+      if (width < 1024) return 2;     // Tablet: 2 items
+      return 3;                       // Desktop: 3 items
+    }
+    return 3; // Default
+  };
+
+  // Duplicate items for infinite loop effect
+  const carouselItems = [...items, ...items, ...items];
+
+  const scrollToItem = (index: number) => {
+    if (carouselRef.current && itemWidth > 0) {
+      carouselRef.current.scrollTo({
+        left: itemWidth * index,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const handlePrev = () => {
-    const newIndex = currentIndex - 1 < 0 ? partners.length - 1 : currentIndex - 1;
+    const newIndex = currentIndex - 1 < 0 ? items.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
+    scrollToItem(newIndex + items.length);
   };
 
   const handleNext = () => {
-    const newIndex = (currentIndex + 1) % partners.length;
+    const newIndex = (currentIndex + 1) % items.length;
     setCurrentIndex(newIndex);
+    scrollToItem(newIndex + items.length);
   };
 
   const startAutoPlay = () => {
@@ -66,7 +79,7 @@ const PartnerCarousel = () => {
     
     intervalRef.current = setInterval(() => {
       handleNext();
-    }, 5000); // 5 seconds interval
+    }, 3000);
   };
 
   const stopAutoPlay = () => {
@@ -75,6 +88,23 @@ const PartnerCarousel = () => {
       intervalRef.current = null;
     }
   };
+
+  useEffect(() => {
+    // Update item width on mount and window resize
+    const updateItemWidth = () => {
+      if (carouselRef.current) {
+        const visibleItems = getVisibleItemCount();
+        const containerWidth = carouselRef.current.clientWidth;
+        const newItemWidth = containerWidth / visibleItems;
+        setItemWidth(newItemWidth);
+      }
+    };
+
+    updateItemWidth();
+    window.addEventListener('resize', updateItemWidth);
+    
+    return () => window.removeEventListener('resize', updateItemWidth);
+  }, []);
 
   useEffect(() => {
     // Start autoplay immediately
@@ -87,15 +117,12 @@ const PartnerCarousel = () => {
     };
   }, [isAutoPlaying, currentIndex]);
 
-  // Calculate which items to display based on currentIndex
-  const getVisiblePartners = () => {
-    const result = [];
-    for (let i = 0; i < visibleItems; i++) {
-      const index = (currentIndex + i) % partners.length;
-      result.push(partners[index]);
+  useEffect(() => {
+    // Initialize carousel position after item width is calculated
+    if (carouselRef.current && itemWidth > 0) {
+      carouselRef.current.scrollLeft = itemWidth * items.length;
     }
-    return result;
-  };
+  }, [itemWidth, items.length]);
 
   const handleMouseEnter = () => {
     setIsAutoPlaying(false);
@@ -108,22 +135,17 @@ const PartnerCarousel = () => {
   };
 
   return (
-    <section className="py-16 px-4 bg-gray-50">
+    <section className="py-12 px-4">
       <div className="container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-2">함께하는</h2>
-          <h2 className="text-4xl font-bold mb-8">이들</h2>
-        </div>
-
         <div 
-          className="relative"
+          className="relative mt-8"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           {/* Navigation buttons */}
           <button
             onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full w-12 h-12 flex items-center justify-center shadow-md text-white hover:bg-gray-800 transition-colors"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
             aria-label="Previous slide"
           >
             <svg
@@ -144,7 +166,7 @@ const PartnerCarousel = () => {
 
           <button
             onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black rounded-full w-12 h-12 flex items-center justify-center shadow-md text-white hover:bg-gray-800 transition-colors"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
             aria-label="Next slide"
           >
             <svg
@@ -163,39 +185,54 @@ const PartnerCarousel = () => {
             </svg>
           </button>
 
-          {/* Partners carousel */}
-          <div className="overflow-hidden px-12">
-            <div 
-              className="flex transition-all duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * (100 / visibleItems)}%)` }}
-            >
-              {partners.map((partner) => (
-                <div 
-                  key={partner.id}
-                  className="w-1/4 flex-shrink-0 px-4 transition-all duration-500"
+          {/* Carousel container */}
+          <div 
+            ref={carouselRef} 
+            className="overflow-hidden"
+            style={{ scrollbarWidth: 'none' }}
+          >
+            <div className="flex transition-transform duration-300">
+              {carouselItems.map((item, index) => (
+                <div
+                  key={`${item.id}-${index}`}
+                  className="flex-shrink-0 px-2"
+                  style={{ width: itemWidth > 0 ? `${itemWidth}px` : 'auto' }}
                 >
-                  <div className="flex flex-col items-center">
-                    <div className="mb-4 h-24 flex items-center justify-center">
-                      <div className="relative w-40 h-16">
-                        <Image
-                          src={partner.imageUrl}
-                          alt={partner.name}
-                          fill
-                          style={{ objectFit: "contain" }}
-                        />
-                      </div>
-                    </div>
-                    <h3 className="text-lg font-medium text-center mb-2">{partner.name}</h3>
-                    <p className="text-sm text-center text-gray-600">{partner.description}</p>
+                  <div className="relative aspect-video rounded-lg overflow-hidden">
+                    <Image
+                      src={item.imageUrl}
+                      alt={`Carousel image ${item.id}`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      priority={index < 5}
+                      className="object-contain"
+                    />
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
+
+        {/* Indicators */}
+        <div className="flex justify-center mt-6 space-x-2">
+          {items.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setCurrentIndex(index);
+                scrollToItem(index + items.length);
+              }}
+              className={`w-3 h-3 rounded-full ${
+                currentIndex === index ? "bg-blue-600" : "bg-gray-300"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
 };
 
-export default PartnerCarousel;
+export default CarouselSection;

@@ -18,67 +18,71 @@ const ActivitiesComponent: React.FC<ActivitiesComponentProps> = ({
   sections,
 }) => {
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      <div className="flex flex-col space-y-12">
+    <div className="w-full lg:mt-20 max-w-7xl mx-auto px-4 py-10">
+      <div className="flex flex-col space-y-8 md:space-y-12">
 
         {/* Header Section */}
-        <div className="text-center mb-10 text-[60px] font-[700] leading-[150%]">
-          <h1 className="">
+        <div className="text-center mb-6 md:mb-10">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[60px] font-bold leading-tight md:leading-[150%]">
             <span className="text-[#111111]">함께하는 일</span>
-            <span className="mx-2 text-[#DDDCDC]">·</span>
+            <span className="mx-1 sm:mx-2 text-[#DDDCDC]">·</span>
             <span className="text-[#BBBBBB]">우리의 흔적</span>
           </h1>
         </div>
 
         {/* Content Sections */}
         {sections.map((section) => (
-          <div key={section.id} className="flex flex-col md:flex-row w-full">
+          <div key={section.id} className="w-full">
             {section.imagePosition === "right" ? (
-              <div className="flex gap-[40px]">
-
-                {/* Image on left */}
-                <div className="w-full md:w-2/3 relative h-64 md:h-auto">
-                  <div className=" w-[825px] h-[171px]">
+              <div className="flex flex-col md:flex-row gap-6 md:gap-[40px]">
+                {/* Image on right */}
+                <div className="w-full md:w-2/3 order-1 md:order-1">
+                  <div className="relative w-full h-[150px] sm:h-[171px] rounded-md overflow-hidden">
                     <Image
                       src={section.imageUrl}
                       alt={section.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 825px"
                       style={{ objectFit: "cover" }}
                       className="rounded-md"
                     />
                   </div>
                 </div>
 
-                {/* Text on right */}
-                <div className="w-full md:w-1/3 flex flex-col justify-center mb-4 md:mb-0 md:pr-6">
+                {/* Text on left */}
+                <div className="w-full md:w-1/3 order-2 md:order-2 flex flex-col justify-center mt-4 md:mt-0">
                   <div className="space-y-2">
-                    <p className="font-[400] text-[18px] leading-[150%] text-[#111111]">
+                    <p className="text-base md:text-lg font-normal leading-relaxed text-[#111111]">
                       {section.description}
                     </p>
-                    <h2 className="text-[40px] font-[700] leading-[150%] text-[#111111] mt-4">{section.title}</h2>
+                    <h2 className="text-2xl sm:text-3xl md:text-[40px] font-bold leading-tight md:leading-[150%] text-[#111111] mt-2 md:mt-4">
+                      {section.title}
+                    </h2>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="flex gap-[40px]">
-                
-                {/* Text on right */}
-                <div className="w-full md:w-1/3 flex flex-col justify-center md:pl-6">
-                  <div className="space-y-2 text-right">
-                    <p className="font-[400] text-[18px] leading-[150%] text-[#111111]">
+              <div className="flex flex-col md:flex-row gap-6 md:gap-[40px]">
+                {/* Text on left */}
+                <div className="w-full md:w-1/3 order-2 md:order-1 flex flex-col justify-center mt-4 md:mt-0">
+                  <div className="space-y-2 text-left md:text-right">
+                    <p className="text-base md:text-lg font-normal leading-relaxed text-[#111111]">
                       {section.description}
                     </p>
-                    <h2 className="text-[40px] font-[700] leading-[150%] text-[#111111] mt-4">{section.title}</h2>
+                    <h2 className="text-2xl sm:text-3xl md:text-[40px] font-bold leading-tight md:leading-[150%] text-[#111111] mt-2 md:mt-4">
+                      {section.title}
+                    </h2>
                   </div>
                 </div>
 
-                {/* Image on left */}
-                <div className="w-full md:w-2/3 relative h-64 md:h-auto mb-4 md:mb-0">
-                  <div className="relative w-[825px] h-[171px]">
+                {/* Image on right */}
+                <div className="w-full md:w-2/3 order-1 md:order-2">
+                  <div className="relative w-full h-[150px] sm:h-[171px] rounded-md overflow-hidden">
                     <Image
                       src={section.imageUrl}
                       alt={section.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 825px"
                       style={{ objectFit: "cover" }}
                       className="rounded-md"
                     />
