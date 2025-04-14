@@ -39,11 +39,11 @@ const CarouselSection = () => {
 
   // Calculate number of visible items based on screen width
   const getVisibleItemCount = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const width = window.innerWidth;
-      if (width < 640) return 1;      // Mobile: 1 item
-      if (width < 1024) return 2;     // Tablet: 2 items
-      return 3;                       // Desktop: 3 items
+      if (width < 640) return 1;
+      if (width < 1024) return 2;
+      return 3;
     }
     return 3; // Default
   };
@@ -76,7 +76,7 @@ const CarouselSection = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-    
+
     intervalRef.current = setInterval(() => {
       handleNext();
     }, 3000);
@@ -101,9 +101,9 @@ const CarouselSection = () => {
     };
 
     updateItemWidth();
-    window.addEventListener('resize', updateItemWidth);
-    
-    return () => window.removeEventListener('resize', updateItemWidth);
+    window.addEventListener("resize", updateItemWidth);
+
+    return () => window.removeEventListener("resize", updateItemWidth);
   }, []);
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const CarouselSection = () => {
   return (
     <section className="py-12 px-4">
       <div className="container mx-auto">
-        <div 
+        <div
           className="relative mt-8"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -186,17 +186,17 @@ const CarouselSection = () => {
           </button>
 
           {/* Carousel container */}
-          <div 
-            ref={carouselRef} 
+          <div
+            ref={carouselRef}
             className="overflow-hidden"
-            style={{ scrollbarWidth: 'none' }}
+            style={{ scrollbarWidth: "none" }}
           >
             <div className="flex transition-transform duration-300">
               {carouselItems.map((item, index) => (
                 <div
                   key={`${item.id}-${index}`}
                   className="flex-shrink-0 px-2"
-                  style={{ width: itemWidth > 0 ? `${itemWidth}px` : 'auto' }}
+                  style={{ width: itemWidth > 0 ? `${itemWidth}px` : "auto" }}
                 >
                   <div className="relative aspect-video rounded-lg overflow-hidden">
                     <Image
